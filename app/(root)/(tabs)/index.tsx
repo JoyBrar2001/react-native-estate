@@ -5,12 +5,8 @@ import { Link } from 'expo-router';
 
 const Index = () => {
   return (
-    <View>
-      <Text className="text-3xl my-10 font-rubik">Welcome to ReState</Text>
-      <Link href={"/sign-in"}>Sign In</Link>
-      <Link href={"/explore"}>Explore</Link>
-      <Link href={"/profile"}>Profile</Link>
-      <Link href={"/properties/1"}>Property</Link>
+    <View className="flex flex-1 justify-center items-center">
+      <Text className="text-3xl my-10 font-rubik text-center">Welcome to ReState</Text>
     </View>
   )
 }
