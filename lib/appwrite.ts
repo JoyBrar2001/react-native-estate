@@ -1,4 +1,4 @@
-import { Account, Avatars, Client, Databases, OAuthProvider } from "react-native-appwrite";
+import { Account, Avatars, Client, Databases, OAuthProvider, Query } from "react-native-appwrite";
 import { openAuthSessionAsync } from "expo-web-browser";
 import * as Linking from "expo-linking";
 
@@ -84,9 +84,9 @@ export async function getCurrentUser() {
   try {
     const response = await account.get();
 
-    if (response.$id){
+    if (response.$id) {
       const userAvatar = avatar.getInitials(response.name);
-      
+
       return {
         ...response,
         avatar: userAvatar.toString(),
@@ -97,5 +97,68 @@ export async function getCurrentUser() {
   } catch (error) {
     console.log(error);
     return null;
+  }
+}
+
+export async function getLatestProperties() {
+  try {
+    const result = await databases.listDocuments(
+      config.databaseId!,
+      config.propertiesCollectionId!,
+      [
+        Query.orderAsc("$createdAt"),
+        Query.limit(5)
+      ]
+    );
+
+    return result.documents;
+  } catch (error) {
+    console.error(error);
+
+    return [];
+  }
+}
+
+export async function getProperties({
+  filter,
+  query,
+  limit
+}: {
+  filter: string;
+  query: string;
+  limit?: number;
+}) {
+  try {
+    const buildQuery = [Query.orderDesc("$createdAt")];
+
+    if (filter && filter !== "All") {
+      buildQuery.push(Query.equal("type", filter));
+    }
+
+    if (query) {
+      buildQuery.push(
+        Query.or([
+          Query.search("name", query),
+          Query.search("address", query),
+          Query.search("description", query)
+        ])
+      );
+    }
+
+    if(limit){
+      buildQuery.push(Query.limit(limit));
+    }
+
+    const result = await databases.listDocuments(
+      config.databaseId!,
+      config.propertiesCollectionId!,
+      buildQuery
+    );
+
+    return result.documents;
+  } catch (error) {
+    console.error(error);
+
+    return [];
   }
 }
