@@ -6,8 +6,8 @@ import * as Linking from "expo-linking";
 export const config = {
   platform: "com.joy.restate",
   endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
-  project_id: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
-  database_id: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID,
+  projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
+  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID,
   agentsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_AGENTS_COLLECTION_ID,
   galleriesCollectionId: process.env.EXPO_PUBLIC_APPWRITE_GALLERIES_COLLECTION_ID,
   reviewsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_REVIEWS_COLLECTION_ID,
@@ -18,7 +18,7 @@ export const client = new Client();
 
 client
   .setEndpoint(config.endpoint!)
-  .setProject(config.project_id!)
+  .setProject(config.projectId!)
   .setPlatform(config.platform!);
 
 export const avatar = new Avatars(client);
